@@ -80,6 +80,7 @@ export default function withDragAndDrop(Calendar) {
         onStart: PropTypes.func,
         onEnd: PropTypes.func,
         onBeginAction: PropTypes.func,
+        onDropFromOutside: PropTypes.fun,
         draggableAccessor: accessor,
         resizableAccessor: accessor,
         dragAndDropAction: PropTypes.object,
@@ -106,11 +107,16 @@ export default function withDragAndDrop(Calendar) {
           onStart: this.handleInteractionStart,
           onEnd: this.handleInteractionEnd,
           onBeginAction: this.handleBeginAction,
+          onDropFromOutside: this.props.onDropFromOutside,
           draggableAccessor: this.props.draggableAccessor,
           resizableAccessor: this.props.resizableAccessor,
           dragAndDropAction: this.state,
         },
       }
+    }
+
+    handleDragOver = event => {
+      event.preventDefault()
     }
 
     handleBeginAction = (event, action, direction) => {
@@ -141,12 +147,19 @@ export default function withDragAndDrop(Calendar) {
     }
 
     render() {
-      const { selectable, ...props } = this.props
+      const { selectable, elementProps, ...props } = this.props
       const { interacting } = this.state
       delete props.onEventDrop
       delete props.onEventResize
 
       props.selectable = selectable ? 'ignoreEvents' : false
+
+      const elementPropsWithDropFromOutside = this.props.onDropFromOutside
+        ? {
+            ...elementProps,
+            onDragOver: this.handleDragOver,
+          }
+        : elementProps
 
       props.className = cn(
         props.className,
@@ -154,7 +167,13 @@ export default function withDragAndDrop(Calendar) {
         !!interacting && 'rbc-addons-dnd-is-dragging'
       )
 
-      return <Calendar {...props} components={this.components} />
+      return (
+        <Calendar
+          {...props}
+          elementProps={elementPropsWithDropFromOutside}
+          components={this.components}
+        />
+      )
     }
   }
 
