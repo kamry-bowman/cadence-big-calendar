@@ -122,8 +122,11 @@ class EventContainerWrapper extends React.Component {
       boundaryBox
     )
 
-    const event = { start, end: slotMetrics.nextSlot(start) }
-    this.context.draggable.onDropFromOutside({ event, isAllDay: false })
+    this.context.draggable.onDropFromOutside({
+      start,
+      end: slotMetrics.nextSlot(start),
+      allDay: false,
+    })
   }
 
   _selectable = () => {

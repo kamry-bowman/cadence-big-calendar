@@ -23,13 +23,15 @@ import { mergeComponents } from './common'
  *
  * Set `resizable` to true in your calendar if you want events to be resizable.
  *
- * The HOC adds `onEventDrop`, `onEventResize`, `onDragStart` callback properties if the events are
- * moved or resized. They are called with these signatures:
+ * The HOC adds `onEventDrop`, `onEventResize`, `onDragStart`, callback properties if the events are
+ * moved or resized. An additional callback property enables dropping draggable items from outside the
+ * calendar onto the calendar. These callbacks are called with these signatures:
  *
  * ```js
  *    function onEventDrop({ event, start, end, allDay }) {...}
  *    function onEventResize(type, { event, start, end, allDay }) {...}  // type is always 'drop'
  *    function onDragStart({ event, action, direction }) {...}
+ *    function onDropFromOutside({ start, end, allDay }) {...}
  * ```
  *
  * Moving and resizing of events has some subtlety which one should be aware of.

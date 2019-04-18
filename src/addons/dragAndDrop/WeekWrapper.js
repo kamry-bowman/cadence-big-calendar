@@ -114,9 +114,12 @@ class WeekWrapper extends React.Component {
     let start = metrics.getDateForSlot(
       getSlotAtX(rowBox, point.x, false, metrics.slots)
     )
-    const event = { start, end: dates.add(start, 1, 'day') }
 
-    this.context.draggable.onDropFromOutside({ event, isAllDay: true })
+    this.context.draggable.onDropFromOutside({
+      start,
+      end: dates.add(start, 1, 'day'),
+      allDay: false,
+    })
   }
 
   handleResize(point, node) {

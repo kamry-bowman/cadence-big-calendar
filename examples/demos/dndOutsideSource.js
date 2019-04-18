@@ -28,15 +28,13 @@ class Dnd extends React.Component {
     this.setState({ draggedEvent: name })
   }
 
-  onDropFromOutside = ({ event: { start, end }, isAllDay }) => {
-    console.log(`Event: ${isAllDay}`)
-    console.log(`Event: ${event}`)
+  onDropFromOutside = ({ start, end, allDay }) => {
     const { draggedEvent, counters } = this.state
     const event = {
       title: formatName(draggedEvent, counters[draggedEvent]),
       start,
       end,
-      isAllDay,
+      isAllDay: allDay,
     }
     const updatedCounters = {
       ...counters,
@@ -106,19 +104,24 @@ class Dnd extends React.Component {
       <div>
         <Card
           className="examples--header"
-          style={{ display: 'flex', justifyContent: 'space-around' }}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+          }}
         >
+          <h4 style={{ color: 'gray', width: '100%' }}>Outside Drag Sources</h4>
           {Object.entries(this.state.counters).map(([name, count]) => (
             <div
               style={{
                 border: '2px solid gray',
                 borderRadius: '4px',
                 width: '100px',
+                margin: '10px',
               }}
               draggable="true"
               key={name}
               onDragStart={() => this.handleDragStart(name)}
-              onDragEnd={this.handleDragEnd}
             >
               {formatName(name, count)}
             </div>
